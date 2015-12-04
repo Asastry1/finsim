@@ -1,7 +1,12 @@
+# Dependencies
 import numpy as np
 import matplotlib.pyplot as plt
 from openpyxl import load_workbook
-from exploration import *
+
+# Model Files
+from explorationModel import *
+from productionModel import *
+from oilForecast import *
 
 #### SIMULATION ####
 # Vars
@@ -15,7 +20,7 @@ cBlowout = []
 numDryHole = 0
 numBlowOut = 0
 # Assumptions
-for i in range(100000):
+for i in range(10000):
 	#Vars
 	if np.random.random() < dryWellProb():
 			dryWell = False
