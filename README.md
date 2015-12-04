@@ -1,9 +1,26 @@
 
-# Introduction
--------------
-- I spent so much time researching and collecting data that I was unsure how much of the complete model I would get to. As such I held off on the introduction and summary too long, and ended up forgetting to write it after getting carried away with Python.
+# Analysis of Exploration and Production of Crude Oil
+By Aditya Sastry <br>
+QTM32625 - Financial Simulation <br>
+December 3, 2015 <br>
 
-# Modeling the Profitability of Oil Exploration
+-------------
+## Table of Contents
+
+- Will be generated here upon completion
+
+## Introduction
+-------------
+### The O&G Industry
+
+#### Upstream
+#### Midstream
+#### Downstream
+
+### Qualitative Analysis of Current Market
+
+## Modeling the Profitability of Oil Exploration
+-------------
 
 ### Exploration Costs Pre-Discovery of Hydrocarbons
 Costs for on-shore seismic methods are estimated to be between \$8,000 and $50,000 per square kilometer depending on the terrain and the quality of method used to perform the scanning operation. In the case of Texas, the flat land and low-risk environment suggests a cost on the lower end of the range. As this price derives its value from a number of underlying factors such as manpower, movement and lease of equipment, number of days required, a triangular distribution was chosen. An additional \$500 per kilometer was added to include the cost of processing. Finally, a second triangular distribution for the analysis of the data was added. This distribution was once again chosen as the cost of the analsysis is based on the terrain, equipment used, and challenge of interpretation. The stated range of \$100,000 - \$1,000,000 includes values from the most simple output, to the most challenging. As Texas is a desert with minimal surface features such as mountains or other major geological feautures, a low cost is realistic. However, due to a lack of experience in the industry, a conservative mode of \$500,000 was chosen. The time spent on this stage is not factored into the overall project duration as it is only after this stage that the commitment to drilling the exploratory well is taken. Before this decision is made, the following models would need to be re-run with the actual cost of the initial study included.
@@ -231,6 +248,20 @@ Blowout Expense<br>
 Number of Blowouts: 55<br><br>
 Total Cost<br>
 {'min': 691.92367861168032, 'mean': 1988.2015675557375, 'max': 11747.77587031666, 'std dev': 468.40263224528638, 'var': 219401.025894313}
+
+## Simulation of Crude Oil Production: Costs, Output & Revenue
+-------------
+### Prospect evaluation, how much Oil is there?
+### Production Duration
+### Simulation of Lifetime Well Yield and Cost
+
+## Bringing it all Together: Analysis of the Drilling Opportunity
+
+### Simulation of E&P
+#### Results
+#### Analysis
+
+# Conclusion
 
 ## First Draft Notes
 
