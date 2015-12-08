@@ -60,17 +60,18 @@ for i in range(1000):
 
 	### PRODUCTION ###
 	if not dryWell:
-		prodQ = prodQt(i+1)
+		
 		prodCost = prodCostBarrel()
 		prodDrillTime = expDrillTime()
 		timeRemaining = int(np.floor((5*240) - (exDrillTime + prodDrillTime))) # 5 years - exploration and production drill time
-		randomWalk = gmr(40.3, timeRemaining, 1) # Generate spot oil prices for time remaining days
+		randomWalk = gmr(100, timeRemaining, 1) # Generate spot oil prices for time remaining days
 		qProd =[]
 		revProd = []
 		cProd = []
 		netProd = []
 		oilVal = []
 		for x in range(timeRemaining):
+			prodQ = prodQt(i+1)
 			qProd.append(prodQ)
 			revProd.append(randomWalk[x]*prodQ)
 			cProd.append(prodQ*prodCost)
