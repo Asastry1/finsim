@@ -11,7 +11,7 @@ from openpyxl import load_workbook
 def ooip(A, h, chi, sw, Boi, E):
 	N = ((7758*A*h*chi*(1-sw))/Boi)*E
 	return N
-	
+
 ## Decline Analysis
 
 def prodQt(t):
@@ -27,5 +27,10 @@ arr = []
 for i in range(480):
 	arr.append(prodQt(i))
 
-plt.plot(arr)
-plt.show()
+#plt.plot(arr)
+#plt.show()
+
+## Production Cost
+
+def prodCostBarrel():
+	return np.random.triangular(22,51,72)
