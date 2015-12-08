@@ -11,18 +11,53 @@ apiKey = "JqjPBo2L93BKkEh3fEo2"
 wtiData = p.read_excel('WTI.xlsx','wti', index_col= None, na_values = ['NA'])
 wtiData = p.DataFrame(wtiData)
 wtiData = wtiData.set_index('Date')
-wtiData.info()
-print(wtiData.tail())
+#print(wtiData['2014-12-25':'2015-11-29'].head())
+#print(wtiData['2014-12-25':'2015-11-29'].tail())
 
 wti = p.date_range('2014-12-25', '2015-12-01', freq = 'D')
 
-#plt.plot(wtiData.index['2014-12-25':'2015-11-29'], wtiData['2014-12-25':'2015-11-29'])
-#plt.title('WTI Daily Spot Prices (1986 - 2015)')
-#plt.xlabel('Year')
-#plt.ylabel('$/bbl')
+plt.plot(wtiData['2014-12-25':'2015-11-29'].index, wtiData['2014-12-25':'2015-11-29'])
+plt.title('WTI Daily Spot Prices (2014-12-15 - 2015-11-29)')
+plt.xlabel('Year')
+plt.ylabel('$/bbl')
+plt.show()
+wtiShort = wtiData['2014-12-25':'2015-11-29'].values # Conver to Numpy array for iterating
+last = 0
+count = 0
+logDiff = []
+for i in wtiShort:
+	if count == 0:
+		count += 1
+		last = i
+	elif count > 0:
+		logDiff.append(np.log(i/last))
+		last = i
+	else:
+		print("You goofed in calculating log diffs")
+		break
+
+sigma = np.std(logDiff)
+print("Sigma = " + str(sigma))
+mu = np.mean(logDiff) + (0.5*sigma)**2
+print("Mu = " + str(mu))
+
+def gmr(mu, sigma, s, t, dt):
+	n = round(t/dt)
+	t = np.linspace(0,t,n)
+	w = np.random.standard_normal(size = n)
+	w = np.cumsum(w)*np.sqrt(dt)
+	x = (mu-0.5*sigma**2)*t + sigma*w
+	s = s*np.exp(x)
+	return np.array(s)
+
+def makeWalks(itr, mu, sigma, s, t, dt):
+	randwalk = np.array([])
+	randwalk = gmr(mu, sigma, s, t, dt)
+	for i in range(itr-1):
+		randwalk =np.column_stack((randwalk, gmr(mu, sigma, s, t, dt)))
+	return randwalk
+
+randwalk = makeWalks(500, mu, sigma, 40.3, 100, 1) # 40.3 being latest oil price
+#print(randwalk)
+#plt.plot(randwalk)
 #plt.show()
-wtiShort = wtiData['2014-12-25':'2015-11-29']
-#wtiShort.plot()
-#plt.show()
-wtiShortWeekly = wtiShort.resample('W-Fri')
-ts.adfuller(wtiShortWeekly, 1)
