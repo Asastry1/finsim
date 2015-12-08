@@ -11,13 +11,15 @@ December 3, 2015 <br>
 
 ## Introduction
 -------------
-### The O&G Industry
+### The  Oil Industry
+There activities of the Oil and Gas (O&G) industry are split into three major components: upstream, midstream, and downstream. This report is concerned only with the upstream segment of the industry in the production of crude oil from onshore reserves. The search for oil, exploration, as well as the extraction of the oil from the ground, production, are the major functions of upstream production of crude oil. The exploration for reserves is carried out with seismic sensors that can scan swatches of land in 2d or 3d. This strategy is especially cheap and effective over water as a boat with the sensor can easily position and maneuver to cover large amounts of ground. On land this task is more difficult with a ground team needing to set up the technology at multiple consecutive locations to gather the required data. Depending on the terrain, this can be a time consuming and expensive task. Once this data is analyzed, and indicates the presence of hydrocarbons at a mineable depth, the next step is to to take samples of the area that is being prospected. Based on the data collected, a model is built for the quantity of oil in the ground (original oil in place) in the sampled area.<br><br>If the ground samples indicate a presence of hydrocarbons with suitable geological conditions, an exploratory well is drilled to the depth of the reserve. This task can be extremely expensive, and can vary greatly in the time taken to complete. As this is generally done by specialized drilling firms due to the cost and difficulty of transport of the drilling rigs, the O&G company generally only takes the risk of not finding oil but sometimes is also liable for worker safety and other factors depending on contract specifics. During and after the drilling process, samples are being taken from the extracted rock and reserve if oil is found. These are used to increase the accuracy of the reserve estimation and to gain a better understanding for the nature of the rock, reserve, and many other geological features that determine the ability to produce from the well. If all these factors are analyzed and indeed positive, the firm moves forward to drill a production well. Oftentimes, many wells are drilled in the same oilfield, but for the sake of this model the assumption of one well being drilled is taken for simplicity. It is possible to extend this model to multiple wells. Once the production well is drilled, a steel casing is fitted to maintain the integrity of the well with a specialized valve secured to the top. From this stage, crude oil production begins.<br><br>
+The next stage in the process is reffered to as the *midstream*. This includes the transportation and storage of the recovered crude product from the upstream operation to the downstream. Refining and point of sale operations are the bulk of the downstream business.<br>
 
-#### Upstream
-#### Midstream
-#### Downstream
 
-### Qualitative Analysis of Current Market
+### Goals and Narrative for the Proposed Model
+
+This paper and accompanying Python model are designed to simulate the profitability of the exploration, production, and sale of crude oil from an O&G firm's risk management standpoint. The location of Texas for E&P was chosen due to the availibilty of data and the large market for "light, sweet crude", benchmarked by the West Texas Intermediate commodity spot price traded out of Cushing, Oklahoma. This largely eliminates transportation and storage costs, however the model does allow for this to be included despite it being upstream focused. The current state of the model makes assumptions for the entire process from a time before any work is started, however it would most effectively be used when assumptions are updated on an ongoing basis with real values as work is carried out. <br><br>
+The firm is looking to drill a single well in Texas after being tipped off to possible oil reserves. They will simulate the entire process of exploraton and production to understand the present value and risks of the project. As the firm is from Europe, their knowledge of the U.S. market is naive so they have decided to utilize Monte-Carlo simulation for all major parameters with conservative values to understand whether they are interested in investing. They are very concerned about the recent collapse in crude prices as well as the very large cash outlay required to undertake any E&P venture.
 
 ## Modeling the Profitability of Oil Exploration
 -------------
@@ -232,7 +234,7 @@ for i in range(100000):
 ```
 
 **Results**
-![Imgur](http://i.imgur.com/E22x1kf.png?1)
+![Imgur](http://i.imgur.com/E22x1kf.png?1)<br>
 **Descriptive Statistics of Distributions** <br><br>
 Pre Discovery <br>
 {'min': 118.13273740013858, 'mean': 558.52465853312526, 'max': 1036.231553353226, 'std dev': 184.40997012647824, 'var': 34007.037082048599}<br><br>
@@ -252,10 +254,99 @@ Total Cost<br>
 ## Simulation of Crude Oil Production: Costs, Output & Revenue
 -------------
 ### Prospect evaluation, how much Oil is there?
+The standard model for prosepect evaluation of onshore oil reserves is the *Original Oil In Place* (OOIP) equation:
+$$ N = \frac{7758Ah\phi(1-S_w)}{B_{oi}}\ \times\ E $$
+Where:<br> $A$ = reservoir area (Acres) <br> $h$ = thickness (Feet) <br> $\phi$ = Porosity REF <br> $S_w$ = Water Saturation <br> $B_{oi}$ = Formation volume factor <br> $E$ = Recovery Factor<br><br>
+As these are specific to observed soil samples and analysis of drilled mud, a simplified model will be used for the scope of this simulation:
+$$ N = Area\ \times\ Net\ Thickness\ \times\ Recovery\ Factor$$
 ### Production Duration
-### Simulation of Lifetime Well Yield and Cost
+The lifetime production of an oil well is constantly decreasing at a growing rate as the pressure and volume decreases. The standard equation to model this is:$$q_t\ =\ q_ie^{-Dt}$$<br>
+Where:<br>$q_t\ =\ Rate\ of\ production\ at\ time\ t$<br>$q_i\ =\ Initial\ rate\ of\ production$<br>$D\ =\ decline\ rate\ \% $<br>$t\ =\ time$
+<br><br>
+To model this, a further simulation will be used based on the follwing table from Oil and Gas Monitor, except with the start dates being sampled from the exploration simulation: <br>
 
-## Bringing it all Together: Analysis of the Drilling Opportunity
+|Factor|Distribution   | Low | Mid  | High  |
+|---|---|---|---|---|
+| qi  | Lognormal  |90   | 100  |125   |
+| D  | Beta  |0.5%   |1%   | 7.5%  |
+| Minimum  | Constant  | 20  | 20  | 20  |
+<br>
+### Production Cost
+### Future Value of Oil
+The West Texas Intermediate (WTI) commodity spot price will be used to benchmark the value of produced crude. Numerous quantitative and analytical models have been used to forecast the price of the commodity, however due to the recent collapse of the price of the asset, there is a great deal of uncertainty. Tradional econometric time series models such as auto-regressive moving-average models are unlikely to perform favorably despite being considered the most accurate in the short and medium term. (HMM possible) Financial models using future prices to estimate changes in spot prices has historically shown that future prices are not efficiently priced, rather than having predictive power over spot prices. Models that rely on economic data would seemingly have the best accuracy in a market so heavily impacted by supply/demand shifts and global manipulation of prices. Factoring in OPEC behavior, EIA reports GDP, and other economic variables has been tested but is most effective with an analytical neural network (ANN). ANNs seem to outperform econometric models in long term forecasts as well.
+<br>
+![Imgur](http://i.imgur.com/xOIGwvr.png?1)
+<br>
+There is an ongoing economic debate about whether the build in prices from 2004 to 2014 was irrational, and the price drop in late 2014 is the return to rational prices. Due to the recent nature of the price drop and the lack of literature on the current state of the asset, I will be using a geometric random walk to simulate the price process of crude oil during the production phase. Arguments exist for both mean reverting and random walk models for oil, however the current situation calls for consvertism in forecasting. This is why a geometric random walk was chosen rather than a mean reverting process.
+<br>
+![Imgur](http://i.imgur.com/O6IN8Pp.png)
+<br>
+
+
+```python
+import Quandl as q
+from datetime import datetime
+import numpy as np
+import pandas as p
+import matplotlib.pyplot as plt
+import statsmodels.tsa.stattools as ts
+
+apiKey = "JqjPBo2L93BKkEh3fEo2"
+#wtiData = q.get("EIA/PET_RWTC_D", authtoken=apiKey) # pull in data from the EIA on spot price of WTI
+#wtiData.to_excel('WTI.xlsx', 'wti') # store it so I don't exceed my 50 api call limit
+wtiData = p.read_excel('WTI.xlsx','wti', index_col= None, na_values = ['NA'])
+wtiData = p.DataFrame(wtiData)
+wtiData = wtiData.set_index('Date')
+wtiShort = wtiData['2014-12-25':'2015-11-29'].values # Conver to Numpy array for iterating
+
+for i in wtiShort: # could have done this faster with matrix operations
+	last = 0
+	count = 0
+	logDiff = []
+	if count == 0:
+		count += 1
+		last = i
+	elif count > 0:
+		logDiff.append(np.log(i/last))
+		last = i
+	else:
+		print("You goofed in calculating log diffs")
+		break
+
+sigma = np.std(logDiff)
+print("Sigma = " + str(sigma))
+mu = np.mean(logDiff) + (0.5*sigma)**2
+print("Mu = " + str(mu))
+
+def gmr(mu, sigma, s, t, dt):
+	n = round(t/dt)
+	t = np.linspace(0,t,n)
+	w = np.random.standard_normal(size = n)
+	w = np.cumsum(w)*np.sqrt(dt)
+	x = (mu-0.5*sigma**2)*t + sigma*w
+	s = s*np.exp(x)
+	return np.array(s)
+
+def makeWalks(itr, mu, sigma, s, t, dt):
+	randwalk = np.array([])
+	randwalk = gmr(mu, sigma, s, t, dt)
+	for i in range(itr-1):
+		randwalk =np.column_stack((randwalk, gmr(mu, sigma, s, t, dt)))
+	return randwalk
+
+randwalk = makeWalks(500, mu, sigma, 40.3, 100, 1) # 40.3 being latest wti-spot price
+plt.plot(randwalk)
+plt.show()
+```
+
+**100 Day N=5 GMR Simulation**
+![Imgur](http://i.imgur.com/MAH84dK.png)
+**100 Day N=500 GMR Simulation**
+![Imgur](http://i.imgur.com/YUxInH8.png)
+<br>
+All the values are stored in a two dimensional array so any oil produced can be marked to market at the appropriate day. This model assumes that oil is only produced and sold during trading days, not Saturday or Sunday. To add this would simply involve duplicating Friday values for the following two periods. Additionally it assumes that produced crude is being sold at closing prices, not intraday prices.
+
+## Bringing it All Together: Analysis of the Drilling Opportunity
 
 ### Simulation of E&P
 #### Results
@@ -283,12 +374,6 @@ def descriptiveStats(list):
 	}
 	return stats
 ```
-
-- The assumptions are based largely on 4 joural papers and a book, however given more time I'm confident I can collect some better data for less naive distributions and values
-
-- The estimation of reserves through original oil in place is likely the most convincing monte carlo simulation in the field, which I will add before the final presentation paper. This will also allow me to have a value for the entire project instead of simply the cost of exploration. I've just had a hard time finding specific data to draw assumptions from. Additionally, until this is done, dry hole cost is not a real factor as we are not simulating past the exploration stage.
-
-- Forecasting the price of crude using a mean reverting process based on post-price crash data will be my methodology for valuing the oil. Given more time I would like to use time series and analytical methods to forecast the crack spread element prices to price the option to refine against selling on the spot market. In the same vein, price hedging with futures would also be interesting.
 
 # Bibliography
 
