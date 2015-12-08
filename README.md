@@ -12,20 +12,22 @@ December 3, 2015 <br>
 ## Introduction
 -------------
 ### The  Oil Industry
-There activities of the Oil and Gas (O&G) industry are split into three major components: upstream, midstream, and downstream. This report is concerned only with the upstream segment of the industry in the production of crude oil from onshore reserves. The search for oil, exploration, as well as the extraction of the oil from the ground, production, are the major functions of upstream production of crude oil. The exploration for reserves is carried out with seismic sensors that can scan swatches of land in 2d or 3d. This strategy is especially cheap and effective over water as a boat with the sensor can easily position and maneuver to cover large amounts of ground. On land this task is more difficult with a ground team needing to set up the technology at multiple consecutive locations to gather the required data. Depending on the terrain, this can be a time consuming and expensive task. Once this data is analyzed, and indicates the presence of hydrocarbons at a mineable depth, the next step is to to take samples of the area that is being prospected. Based on the data collected, a model is built for the quantity of oil in the ground (original oil in place) in the sampled area.<br><br>If the ground samples indicate a presence of hydrocarbons with suitable geological conditions, an exploratory well is drilled to the depth of the reserve. This task can be extremely expensive, and can vary greatly in the time taken to complete. As this is generally done by specialized drilling firms due to the cost and difficulty of transport of the drilling rigs, the O&G company generally only takes the risk of not finding oil but sometimes is also liable for worker safety and other factors depending on contract specifics. During and after the drilling process, samples are being taken from the extracted rock and reserve if oil is found. These are used to increase the accuracy of the reserve estimation and to gain a better understanding for the nature of the rock, reserve, and many other geological features that determine the ability to produce from the well. If all these factors are analyzed and indeed positive, the firm moves forward to drill a production well. Oftentimes, many wells are drilled in the same oilfield, but for the sake of this model the assumption of one well being drilled is taken for simplicity. It is possible to extend this model to multiple wells. Once the production well is drilled, a steel casing is fitted to maintain the integrity of the well with a specialized valve secured to the top. From this stage, crude oil production begins.<br><br>
-The next stage in the process is reffered to as the *midstream*. This includes the transportation and storage of the recovered crude product from the upstream operation to the downstream. Refining and point of sale operations are the bulk of the downstream business.<br>
+The activities of the Oil and Gas (O&G) industry are split into three major components: upstream, midstream, and downstream. This report is concerned only with the upstream segment of the industry, specifically in the production of crude oil from onshore reserves. The search for oil, exploration, as well as the extraction of the oil from the ground, production, are the major functions of upstream sector of crude oil. The exploration for reserves is carried out with seismic sensors that can scan swatches of land in 2d or 3d. This strategy is especially cheap and effective over water as a boat with the sensor can easily position and maneuver to cover large amounts of ground. On land this task is more difficult with a ground team needing to set up the technology at multiple consecutive locations to gather the required data. Depending on the terrain, this can be a time consuming and expensive task. Once the data is analyzed, and indicates the presence of hydrocarbons at a mineable depth, the next step is to to take samples of the area that is being prospected. Based on the data collected, a model is built for the quantity of oil in the ground reserves of (original oil in place) the sampled area.<br><br>If the ground samples indicate a presence of hydrocarbons with suitable geological conditions, an exploratory well is drilled to the depth of the reserve. This task can be extremely expensive and can vary greatly in the time taken to complete. As this is generally done by specialized drilling firms due to the cost and difficulty of transporting oil rigs, the O&G company generally only takes the risk of not finding oil but sometimes is also liable for worker safety and other factors depending on contract specifics. During and after the drilling process, samples are taken from the extracted rock and reserve if oil is found. These are used to increase the accuracy of the reserve estimation and to gain a better understanding for the nature of the rock, reserve, and many other geological features that determine the ability to produce from the well. If all these factors are analyzed and indeed positive, the firm moves forward to drill a production well after conducting extensive engineering and design studies. Oftentimes, multiple wells are drilled in the same oilfield, but for the sake of this model the assumption of one well being drilled is taken for simplicity. It is possible to extend this model to multiple wells. Once the production well is drilled, a steel casing is fitted to maintain the integrity of the hole with a specialized valve secured to the top. From this stage, crude oil production begins.<br><br>
+The next step in the process is reffered to as the *midstream*. This includes the transportation and storage of the recovered crude product, linking the upstream operation to the downstream. Refining and point of sale operations are the bulk of the downstream business.<br>
 
 
 ### Goals and Narrative for the Proposed Model
 
 This paper and accompanying Python model are designed to simulate the profitability of the exploration, production, and sale of crude oil from an O&G firm's risk management standpoint. The location of Texas for E&P was chosen due to the availibilty of data and the large market for "light, sweet crude", benchmarked by the West Texas Intermediate commodity spot price traded out of Cushing, Oklahoma. This largely eliminates transportation and storage costs, however the model does allow for this to be included despite it being upstream focused. The current state of the model makes assumptions for the entire process from a time before any work is started, however it would most effectively be used when assumptions are updated on an ongoing basis with real values as work is carried out. <br><br>
-The firm is looking to drill a single well in Texas after being tipped off to possible oil reserves. They will simulate the entire process of exploraton and production to understand the present value and risks of the project. As the firm is from Europe, their knowledge of the U.S. market is naive so they have decided to utilize Monte-Carlo simulation for all major parameters with conservative values to understand whether they are interested in investing. They are very concerned about the recent collapse in crude prices as well as the very large cash outlay required to undertake any E&P venture.
+The firm is looking to drill a single well in Texas after being tipped off to possible oil reserves. They will simulate the entire process of exploraton and production to understand the present value and risks of the project. As the firm is from Europe, their knowledge of the U.S. market is naive so they have decided to utilize Monte-Carlo simulation for all major parameters with conservative values to understand whether they are interested in investing. They are very concerned about the recent collapse in crude prices as well as the very large cash outlay required to undertake any E&P venture. There have however been positive signs in Texas as production values continue to rise. Additionally, they plan on selling the oil on a Mercantile Exchange rather than going through the trouble of carrying out midstream or downstream work. They also have decided, against risk managements advice, to not hedge their production with WTI futures. They are also only interested in a project that can generate profits within 5 years of begining the exploration process.
+<br><br>
+*All dollar values calculated in \$1,000s except prices of barrels of oil*
 
 ## Modeling the Profitability of Oil Exploration
 -------------
 
 ### Exploration Costs Pre-Discovery of Hydrocarbons
-Costs for on-shore seismic methods are estimated to be between \$8,000 and $50,000 per square kilometer depending on the terrain and the quality of method used to perform the scanning operation. In the case of Texas, the flat land and low-risk environment suggests a cost on the lower end of the range. As this price derives its value from a number of underlying factors such as manpower, movement and lease of equipment, number of days required, a triangular distribution was chosen. An additional \$500 per kilometer was added to include the cost of processing. Finally, a second triangular distribution for the analysis of the data was added. This distribution was once again chosen as the cost of the analsysis is based on the terrain, equipment used, and challenge of interpretation. The stated range of \$100,000 - \$1,000,000 includes values from the most simple output, to the most challenging. As Texas is a desert with minimal surface features such as mountains or other major geological feautures, a low cost is realistic. However, due to a lack of experience in the industry, a conservative mode of \$500,000 was chosen. The time spent on this stage is not factored into the overall project duration as it is only after this stage that the commitment to drilling the exploratory well is taken. Before this decision is made, the following models would need to be re-run with the actual cost of the initial study included.
+Costs for onshore seismic methods are estimated to be between \$8,000 and \$50,000 per square kilometer depending on the terrain and the quality of method used to perform the scanning operation. In the case of Texas, the flat land and low-risk environment suggests a cost on the lower end of the range. As this price derives its value from a number of underlying factors such as manpower, movement and lease of equipment, number of days required, a triangular distribution was chosen. An additional \$500 per kilometer was added to include the cost of processing. Finally, a second triangular distribution for the analysis of the data was added. This distribution was once again chosen as the cost of the analsysis is based on the terrain, equipment used, and challenge of interpretation. The stated range of \$100,000 - \$1,000,000 includes values from the most simple output, to the most challenging. As Texas is a desert with minimal surface features such as mountains or other major geological feautures, a low cost is realistic. However, due to a lack of experience in the industry, a conservative mode of \$500,000 was chosen. The time spent on this stage is not factored into the overall project duration as it is only after this stage that the commitment to drilling the exploratory well is taken. Before this decision is made, the following models would need to be re-run with the actual cost of the initial study included.
 
 
 ```python
@@ -47,12 +49,12 @@ def preHydrocarbonExpense():
 Now that the initial study has found appropriate sites for drilling, there is still a chance that the well does not actually strike oil. This situation is called a *dry well* or *dry hole.* The model for this probability is provided by the following equation:
 > $$ P_{Successful\ Well} = P_{Hydrocarbons} \times P_{Reservoir} \times P_{Seal} \times P_{Structure} $$
 
-Mun's model for the probabilty of a dry-hole is one of the few availible, however technology has significantly improved since the publication of the book CITE. Due to this the standard deviation of the $P_{Hydrocarbons}$ and $P_{Reservoir}$ has been decreased by 25% in the provided model. 
+Mun's model for the probabilty of a dry-hole is one of the few availible, however technology has significantly improved since the publication of the book CITE. Due to this, the standard deviation of the $P_{Hydrocarbons}$ and $P_{Reservoir}$ has been decreased by 25% in the provided model. This probability will be used to calculate when a well is successful or not in the final simulation.
 
 
 ```python
 def dryWellProb():
-	techDisc = 0.25
+	techDisc = 0.25 # Discount % for improved technology
 	techDisc = 1 - techDisc
 
 	pHydrocarbons = np.random.normal(.99,(.05*techDisc))
@@ -80,10 +82,8 @@ The cost of these operations vary according to two major factors: the time it ta
 
 Based on the above statement, estimating the days required as well as the depth and other known costs seems to be an effective way to analyze the cost of the well. Contracts for drilling are generally quoted on a *dayrate*, but infrequently there are contracts for a fixed value granted.
 
-*First draft note*: I found liturature on the JAS and MRI models of drilling price estimation (after completing this section), which seems to be superior to what I used. I will apply this model and compare it to mine in the final draft.  It's based on a regression with known independent variables and dummy variables.
-
 #### Drilling Time
-Estimations of onshore drilling have a range of 20 days to 120 days based on examining multiple sources. This variablity is often due to geographical challenges and hazards as well as somewhat frequent delays that occur. As Texas, specifically West and North Texas where oil is relatively abundant, there are not major geographical or geological challenges. Due to this, a normal distribution with $\mu = 60\  days,\ \sigma = 7\ days$ was chosen. The assumption that projects that do not face significant delays have a 95.45% chance of being completed +/- two weeks of the 60 day estimate seems reasonable based on emperical evidence.<br><br>
+Estimations of onshore drilling have a range of 20 days to 120 days based on examining multiple sources. This variablity is often due to geographical challenges and hazards as well as somewhat frequent delays that occur. As Texas, specifically West and North Texas where oil is relatively abundant, there are not major geographical or geological challenges. Due to this, a normal distribution with $\mu = 60\  days,\ \sigma = 7\ days$ was chosen. The assumption that projects that do not face significant delays have a 95.45% chance of being completed +/- two weeks of the 60 day estimate seems reasonable based on research.<br><br>
 However, as there are "frequent" delays, a number that is not explicitly quantified in any of the literature reviewed, this must be taken into account. Based on capital budgeting projects from other industries, the assumed frequency of significant delays (exceeding the included two week margin) is assumed at 15% of projects. In the case of a delay, a duration of three to six weeks is chosen uniformly due to the number of possible issues that could lead to an unpredictable range of delays.
 
 
@@ -108,7 +108,7 @@ mean = 64.6659908965
 #### Drilling Depth
 There are a few quantitative models for estimating drilling depth based on a number of geological factors. However, rather than crudely estimating these paramteres, forecasting the average drilling depth in the United States for exploratory Oil wells based on the U.S. Energy Information Administration (EIA) reports seemed more prudent. With either industry data or experimental results, using geological simulation would very likely result in a more accurate outcome.
 <br><br>
-The EIA provides average well depths for a number of parameters including the type of resource such as oil, natural gass, etc., as well as the three types of wells: dry, exploratory, and development. Last updated in August 2015, data from 1949 to 2008 is provided. A simple linear regression of the coded year, 1-60 rather than 1949-2008, as the independent variable with the depth of wells as the dependent variable yields a strong explanatory model. With an $R^2$ value of 83.79% and P-Values significant at $\alpha = 0.05$ for both the slope and intercept, the least squares regression appears to be a strong fit. This equation was then used to forecast for well depth in the year 2016, the estimated completion year of the Texas project.
+The EIA provides average well depths for a number of parameters including the type of resource such as oil, natural gass, etc., as well as the three types of wells: dry, exploratory, and development. Last updated in August 2015, data from 1949 to 2008 is provided for the depth of exploratory oil wells. A simple linear regression of the coded year, 1-60 rather than 1949-2008, as the independent variable with the depth of wells as the dependent variable yields a strong explanatory model. With an $R^2$ value of 83.79% and P-Values significant at $\alpha = 0.05$ for both the slope and intercept, the least squares regression appears to be a strong fit. This equation was then used to forecast for well depth in the year 2016, the estimated completion year of the Texas project.
 *First Draft Note* I plan on updating the regression to a time series model before the final paper
 
 
@@ -152,7 +152,7 @@ P Value of Intercept = $1.38 \times 10^{-24}$
 95% Interval Assuming Normality = {7819.50 ft,8332.44 ft}
 
 #### Logging
-During the process and after the exploratory well is drilled, the extracted mud as well as contents of the well is scientifically tested on an ongoing basis for hydrocarbons and various properties of the surrounding geology. The cost driver for this operation is simplified to a price per meter drilled at a rateof \$150 - \$200 per meter. This is simulated below based on two uniform distributions, the depth based on the confidence interval, and the cost based on the price estimate discussed above.
+During the process and after the exploratory well is drilled, the extracted mud as well as contents of the well is scientifically tested on an ongoing basis for hydrocarbons and various properties of the surrounding geology. The cost driver for this operation is simplified to a price per meter drilled at a rate of \$150 - \$200 per meter. This is simulated below based on two uniform distributions, the depth based on the confidence interval, and the cost based on the price estimate discussed above.
 
 
 ```python
@@ -235,21 +235,8 @@ for i in range(100000):
 
 **Results**
 ![Imgur](http://i.imgur.com/E22x1kf.png?1)<br>
-**Descriptive Statistics of Distributions** <br><br>
-Pre Discovery <br>
-{'min': 118.13273740013858, 'mean': 558.52465853312526, 'max': 1036.231553353226, 'std dev': 184.40997012647824, 'var': 34007.037082048599}<br><br>
-Dry Well<br>
-{'min': 0.0, 'mean': 230.38033958811891, 'max': 1927.7981618156189, 'std dev': 404.02718578433763, 'var': 163237.96685281169}<br>
-Number of Dry Holes: 25857<br><br>
-Drilling Cost<br>
-{'min': 0.0, 'mean': 876.93401096964806, 'max': 2586.5669671874443, 'std dev': 568.00266905455442, 'var': 322627.03205309768}<br><br>
-Logging Cost<br>
-{'min': 0.0, 'mean': 319.4819701434327, 'max': 507.72216355231461, 'std dev': 191.25481412734604, 'var': 36578.40392688568}<br><br>
-Blowout Expense<br>
-{'min': 0.0, 'mean': 2.8805883214128825, 'max': 9880.2628265295079, 'std dev': 136.46317034458568, 'var': 18622.196860495409}<br>
-Number of Blowouts: 55<br><br>
-Total Cost<br>
-{'min': 691.92367861168032, 'mean': 1988.2015675557375, 'max': 11747.77587031666, 'std dev': 468.40263224528638, 'var': 219401.025894313}
+**Descriptive Statistics of Total Cost** <br><br>
+min: 691.92367861168032<br> mean: 1988.2015675557375<br> max: 11747.77587031666<br> std dev: 468.40263224528638<br> var: 219401.025894313
 
 ## Simulation of Crude Oil Production: Costs, Output & Revenue
 -------------
@@ -257,20 +244,43 @@ Total Cost<br>
 The standard model for prosepect evaluation of onshore oil reserves is the *Original Oil In Place* (OOIP) equation:
 $$ N = \frac{7758Ah\phi(1-S_w)}{B_{oi}}\ \times\ E $$
 Where:<br> $A$ = reservoir area (Acres) <br> $h$ = thickness (Feet) <br> $\phi$ = Porosity REF <br> $S_w$ = Water Saturation <br> $B_{oi}$ = Formation volume factor <br> $E$ = Recovery Factor<br><br>
-As these are specific to observed soil samples and analysis of drilled mud, a simplified model will be used for the scope of this simulation:
-$$ N = Area\ \times\ Net\ Thickness\ \times\ Recovery\ Factor$$
+As these are specific to observed soil samples and analysis of drilled mud, a function to output this value has been written; however, for the scope of this report a simplified model will be used. As there is a 5 year cap on breaking even, the model will only use the production duration calculated below to asses this project under the assumption that there is more oil than can be extracted in 5 years - (expolration + production). The data availible on porosity and other factors seems to be rarely published, or behind a paywall and any kind of distributional analysis seems to be absent. Some example simulations exist, however they seem to have entirely fabricated data. 
 ### Production Duration
 The lifetime production of an oil well is constantly decreasing at a growing rate as the pressure and volume decreases. The standard equation to model this is:$$q_t\ =\ q_ie^{-Dt}$$<br>
 Where:<br>$q_t\ =\ Rate\ of\ production\ at\ time\ t$<br>$q_i\ =\ Initial\ rate\ of\ production$<br>$D\ =\ decline\ rate\ \% $<br>$t\ =\ time$
 <br><br>
 To model this, a further simulation will be used based on the follwing table from Oil and Gas Monitor, except with the start dates being sampled from the exploration simulation: <br>
 
-|Factor|Distribution   | Low | Mid  | High  |
+|Factor|Distribution   | Low | Mode  | High  |
 |---|---|---|---|---|
-| qi  | Lognormal  |90   | 100  |125   |
+| qi  | Lognormal<br>(10%,50%,90%)  |90   | 100  |125   |
 | D  | Beta  |0.5%   |1%   | 7.5%  |
 | Minimum  | Constant  | 20  | 20  | 20  |
 <br>
+As this data was provided in Low, Mode, High format, triangular distributions will be fitted to best match the CDF of the suggest distributions. While this is not ideal, it does drastically decrease the positive tail probabilities while still capturing the majority of the negative tail making it more conservative. Based on visual analysis of the distributions, the following table is used.
+<br>
+
+|Factor|Distribution   | Low | Mode  | High  |
+|---|---|---|---|---|
+| qi  | Triangular  |85   | 98  |128   |
+| D  | Triangular  |0.5%   |1.2%   | 5%  |
+| Minimum  | Constant  | 20  | 20  | 20  |
+<br>
+
+
+```python
+def prodQt(t):
+	qi = np.random.triangular(85,96,125)
+	D = np.random.triangular(0.005,0.012, 0.05)
+	minimum = 20.0
+	qt = qi*exp(-1*D*t)
+	return qt
+```
+
+**Example Exponential Production Curve n = 2 years (480 production days)**
+![Imgur](http://i.imgur.com/nRs6Ny3.png?1)
+Barrel output per day reaches minimum value of 20 and stabilizes
+
 ### Production Cost
 ### Future Value of Oil
 The West Texas Intermediate (WTI) commodity spot price will be used to benchmark the value of produced crude. Numerous quantitative and analytical models have been used to forecast the price of the commodity, however due to the recent collapse of the price of the asset, there is a great deal of uncertainty. Tradional econometric time series models such as auto-regressive moving-average models are unlikely to perform favorably despite being considered the most accurate in the short and medium term. (HMM possible) Financial models using future prices to estimate changes in spot prices has historically shown that future prices are not efficiently priced, rather than having predictive power over spot prices. Models that rely on economic data would seemingly have the best accuracy in a market so heavily impacted by supply/demand shifts and global manipulation of prices. Factoring in OPEC behavior, EIA reports GDP, and other economic variables has been tested but is most effective with an analytical neural network (ANN). ANNs seem to outperform econometric models in long term forecasts as well.
@@ -339,12 +349,12 @@ plt.plot(randwalk)
 plt.show()
 ```
 
-**100 Day N=5 GMR Simulation**
+**100 Day n = 5 GMR Simulation**
 ![Imgur](http://i.imgur.com/MAH84dK.png)
-**100 Day N=500 GMR Simulation**
+**100 Day n = 500 GMR Simulation**
 ![Imgur](http://i.imgur.com/YUxInH8.png)
 <br>
-All the values are stored in a two dimensional array so any oil produced can be marked to market at the appropriate day. This model assumes that oil is only produced and sold during trading days, not Saturday or Sunday. To add this would simply involve duplicating Friday values for the following two periods. Additionally it assumes that produced crude is being sold at closing prices, not intraday prices.
+All the values are stored in a two dimensional array so any oil produced can be marked to market at the appropriate day and discounted. This model assumes that oil is only produced and sold during trading days, not Saturday or Sunday. To add this would simply involve duplicating Friday values for the following two periods. Additionally it assumes that produced crude is being sold at closing prices, not intraday prices.
 
 ## Bringing it All Together: Analysis of the Drilling Opportunity
 

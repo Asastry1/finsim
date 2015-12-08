@@ -8,6 +8,10 @@ from openpyxl import load_workbook
 
 ## Reserve Analysis
 
+def ooip(A, h, chi, sw, Boi, E):
+	N = ((7758*A*h*chi*(1-sw))/Boi)*E
+	return N
+	
 ## Decline Analysis
 
 def prodQt(t):
