@@ -4,6 +4,12 @@ import matplotlib.pyplot as plt
 from openpyxl import load_workbook
 
 ### Let's get some descriptive stats ###
+def percentilesC(array):
+	perVals = []
+	for r in range(9):
+		perVals.append(str(r*10+10) + ": " + str(np.percentile(array, (r*10+10))))
+	return perVals
+
 def descriptiveStats(list):
 	stats = {
 		'mean': np.mean(list),

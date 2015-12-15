@@ -31,23 +31,20 @@ npvOilVal = []
 for i in range(1000):
 	#Vars
 	### EXPLORATION ###
-	if np.random.random() < dryWellProb():
-			dryWell = False
-	else:
-		dryWell = True
-		numDryHole += 1
-	#print(dryWell)
 	exDrillTime = expDrillTime()
 	dayCost = drillDaycost()
 	cPreDiscover.append(preHydrocarbonExpense())
-	if dryWell:
+	if np.random.random() < dryWellProb():
 		cDryWell.append(exDrillTime*dayCost*0.75) # Only drilling time, no analysis with a discount for less processing and other costs
 		cDrill.append(0)
 		cLogging.append(0)
+		dryWell = True
 	else:
 		cDryWell.append(0)
 		cDrill.append(exDrillTime*dayCost)
 		cLogging.append(loggingCost())
+		numDryHole += 1
+		dryWell = False
 	blowout = disaster()
 	blowoutExpense = np.random.uniform(1000,10000)
 	if blowout:
@@ -60,11 +57,11 @@ for i in range(1000):
 
 	### PRODUCTION ###
 	if not dryWell:
-		
 		prodCost = prodCostBarrel()
 		prodDrillTime = expDrillTime()
 		timeRemaining = int(np.floor((5*240) - (exDrillTime + prodDrillTime))) # 5 years - exploration and production drill time
-		randomWalk = gmr(100, timeRemaining, 1) # Generate spot oil prices for time remaining days
+		randomWalk = gmr(40.3, timeRemaining, 1) # Generate spot oil prices for time remaining days
+		# Arrays to be reset each simulation
 		qProd =[]
 		revProd = []
 		cProd = []
@@ -82,26 +79,51 @@ for i in range(1000):
 		NPVrevProd.append(np.npv(dailyRate, revProd))
 		SUMqProd.append(np.sum(qProd))
 		npvOilVal.append(np.npv(dailyRate, oilVal))
-		#npvProd.append(np.sum(netProd))
 		finalRev.append(np.npv(dailyRate, netProd)-1000.0*(cPreDiscover[i]+cDryWell[i]+cDrill[i]+cLogging[i]+cBlowout[i]))
 	else:
 		finalRev.append(-1000.0*(cPreDiscover[i]+cDryWell[i]+cDrill[i]+cLogging[i]+cBlowout[i]))
 		npvProd.append(0)
-#print(npvProd)
-#print("Pre Discovery")
-#print(descriptiveStats(cPreDiscover))
-#print("Dry Well")
-#print(descriptiveStats(cDryWell))
-#print("Number of Dry Holes: " + str(numDryHole))
-#print("Drilling Cost")
-#print(descriptiveStats(cDrill))
-#print("Logging Cost")
-#print(descriptiveStats(cLogging))
-#print("Blowout Expense")
-#print(descriptiveStats(cBlowout))
-#print("Number of Blowouts: " + str(numBlowOut))
-#print("Total Cost")
-#print(descriptiveStats(cExploration))
+
+print("Pre Discovery")
+print(descriptiveStats(cPreDiscover))
+print(percentilesC(cPreDiscover))
+print("Dry Well")
+print(descriptiveStats(cDryWell))
+print(percentilesC(cDryWell))
+print("Number of Dry Holes: " + str(numDryHole))
+print("Drilling Cost")
+print(descriptiveStats(cDrill))
+print(percentilesC(cDrill))
+print("Logging Cost")
+print(descriptiveStats(cLogging))
+print(percentilesC(cLogging))
+print("Blowout Expense")
+print(descriptiveStats(cBlowout))
+print(percentilesC(cBlowout))
+print("Number of Blowouts: " + str(numBlowOut))
+print("Total Cost")
+print(descriptiveStats(cExploration))
+print(percentilesC(cExploration))
+
+
+print("Production Quantity")
+print(descriptiveStats(SUMqProd))
+print(percentilesC(SUMqProd))
+print("Production Cost")
+print(descriptiveStats(NPVcProd))
+print(percentilesC(NPVcProd))
+print("Production Revenue")
+print(descriptiveStats(NPVrevProd))
+print(percentilesC(NPVrevProd))
+print("Production P&L")
+print(descriptiveStats(npvProd))
+print(percentilesC(npvProd))
+print("Oil Value")
+print(descriptiveStats(npvOilVal))
+print(percentilesC(npvOilVal))
+print("Project Revenue")
+print(descriptiveStats(finalRev))
+print(percentilesC(finalRev))
 
 plt.figure(1)
 plt.subplot(321)
@@ -144,3 +166,4 @@ plt.subplot(326)
 plt.hist(finalRev, bins = 100)
 plt.title('Project Revenue')
 plt.show()
+
